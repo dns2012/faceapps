@@ -6,14 +6,20 @@ export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            thumbnail : "default.png"
+            thumbnail : "default.png",
+            password : ""
         }
+        this.submitLogin = this.submitLogin.bind(this);
     }
 
     componentDidMount() {
-        this.setState({
-            thumbnail : this.props.navigation.state.params.link
-        })
+        // this.setState({
+        //     thumbnail : this.props.navigation.state.params.link
+        // })
+    }
+
+    submitLogin() {
+        alert("oke")
     }
 
     render() {
@@ -31,12 +37,12 @@ export default class Login extends Component {
                         <Thumbnail square source={{ uri: this.state.thumbnail }} />
                     </Left>
                     <Body>
-                        <Text>Achmad Rivaldi</Text>
+                        <Text>John Doe</Text>
                         <Text note numberOfLines={1}>Accuration : 75%</Text>
                     </Body>
                     <Right>
                         <Button transparent>
-                        <Text>DETAIL</Text>
+                            <Text>DETAIL</Text>
                         </Button>
                     </Right>
                     </ListItem>
@@ -44,12 +50,12 @@ export default class Login extends Component {
                 <Form>
                     <Item stackedLabel>
                         <Label>Password</Label>
-                        <Input />
+                        <Input secureTextEntry={true} />
                     </Item>
+                    <Button onPress={this.submitLogin} block primary rounded style={{marginTop: 10, marginLeft: 10, marginRight: 10}}>
+                        <Text>SIGN IN</Text>
+                    </Button>
                 </Form>
-                <Button block primary rounded style={{marginTop: 10, marginLeft: 10, marginRight: 10}}>
-                    <Text>SIGN IN</Text>
-                </Button>
                 <Text style={{alignSelf: "center", marginTop: 10}}>
                     OR
                 </Text>

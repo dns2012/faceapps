@@ -3,13 +3,13 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 
-import Present from './screen/Present';
-import Login from './screen/Login';
-import Forget from './screen/Forget';
-import Profile from './screen/Profile';
-import History from './screen/History';
-import Location from './screen/Location';
-import Friends from './screen/Friends';
+import Present from './screens/Present';
+import Login from './screens/Login';
+import Forget from './screens/Forget';
+import Profile from './screens/Profile';
+import History from './screens/History';
+import Location from './screens/Location';
+import Friends from './screens/Friends';
 
 
 const MainNavigator = createStackNavigator(
@@ -27,7 +27,7 @@ const MainNavigator = createStackNavigator(
     navigationOptions: {
       headerVisible: false,
     },
-    initialRouteName : 'Present'
+    initialRouteName : 'Login'
   },
 );
 
