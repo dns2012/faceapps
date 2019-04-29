@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
 import { Container, Header, Body, Title, Content, List, ListItem, Left, Right, Footer, FooterTab, Button, Icon, Text } from 'native-base';
 export default class History extends Component {
+
+  constructor() {
+    super();
+    this.goProfile = this.goProfile.bind(this);
+    this.goFriends = this.goFriends.bind(this);
+  }
+
+  goProfile() {
+    this.props.navigation.navigate("Profile");
+  }
+
+  goFriends() {
+    this.props.navigation.navigate("Friends");
+  }
+
   render() {
     return (
       <Container>
@@ -69,7 +84,7 @@ export default class History extends Component {
         </Content>
         <Footer>
           <FooterTab>
-            <Button vertical>
+            <Button onPress={this.goProfile} vertical>
               <Icon name="person" />
               <Text>Profile</Text>
             </Button>
@@ -77,7 +92,7 @@ export default class History extends Component {
               <Icon name="paper" />
               <Text>History</Text>
             </Button>
-            <Button vertical>
+            <Button onPress={this.goFriends} vertical>
               <Icon name="compass" />
               <Text>Friends</Text>
             </Button>

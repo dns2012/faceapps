@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
 import { Container, Header, Body, Title, Content, Thumbnail, Form, Item, Label, Input, Textarea, Footer, FooterTab, Button, Icon, Text } from 'native-base';
 export default class Profile extends Component {
+
+  constructor() {
+    super();
+    this.goHistory = this.goHistory.bind(this);
+    this.goFriends = this.goFriends.bind(this);
+  }
+
+  goHistory() {
+    this.props.navigation.navigate("History");
+  }
+
+  goFriends() {
+    this.props.navigation.navigate("Friends");
+  }
+  
   render() {
     return (
       <Container>
@@ -37,11 +52,11 @@ export default class Profile extends Component {
               <Icon name="person" />
               <Text>Profile</Text>
             </Button>
-            <Button vertical>
+            <Button onPress={this.goHistory} vertical>
               <Icon name="paper" />
               <Text>History</Text>
             </Button>
-            <Button vertical>
+            <Button onPress={this.goFriends} vertical>
               <Icon name="compass" />
               <Text>Friends</Text>
             </Button>
