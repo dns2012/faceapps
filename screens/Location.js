@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
+
+import { Image, Alert } from 'react-native';
+
 import { Container, Header, Body, Left, Card, CardItem, Thumbnail, Title, Button, Icon,  Content, Text } from 'native-base';
+
 export default class Location extends Component {
     constructor() {
         super();
@@ -9,6 +12,18 @@ export default class Location extends Component {
     
     goFriends() {
         this.props.navigation.navigate("Friends");
+    }
+
+    componentDidMount() {
+        console.log('oke')
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                const location = JSON.stringify(position);
+                console.log(location)
+            },
+            error => Alert.alert(error.message),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
     }
 
     render() {

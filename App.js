@@ -27,7 +27,7 @@ const MainNavigator = createStackNavigator(
     navigationOptions: {
       headerVisible: false,
     },
-    initialRouteName : 'Friends'
+    initialRouteName : 'Location'
   },
 );
 

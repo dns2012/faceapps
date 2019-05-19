@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 
+import { Alert } from 'react-native';
+
 import { Container, Header, Body, Left, Right, List, ListItem, Thumbnail, Title, Content, Form, Item, Input, Label, Button, Text} from 'native-base';
+
+import md5 from 'md5';
+
+import SharedPreferences from 'react-native-shared-preferences';
 
 export default class Login extends Component {
     constructor(props) {
@@ -8,16 +14,20 @@ export default class Login extends Component {
         this.state = {
             thumbnail : "default.png",
             password : "",
-            required : "none"
+            required : "none",
+            distance : 0,
+            name : ""
         }
         this.submitLogin = this.submitLogin.bind(this);
         this.goForget = this.goForget.bind(this);
     }
 
     componentDidMount() {
-        // this.setState({
-        //     thumbnail : this.props.navigation.state.params.link
-        // })
+        this.setState({
+            thumbnail : "http://117.53.47.77:3000/upload/" + this.props.navigation.state.params.Profile.image,
+            distance : this.props.navigation.state.params.Distance,
+            name : this.props.navigation.state.params.Profile.name
+        })
     }
 
     submitLogin() {
@@ -29,7 +39,21 @@ export default class Login extends Component {
                 required: "flex"
             })
         } else {
-            this.props.navigation.navigate('Profile')
+            let password = md5(this.state.password);
+            if(password == this.props.navigation.state.params.Profile.password) {
+                let userId = this.props.navigation.state.params.Profile.id.toString();
+                SharedPreferences.setItem("userId", userId);
+                this.props.navigation.navigate('Profile')
+            } else {
+                Alert.alert(
+                    "Alert",
+                    "Wrong password !",
+                    [
+                        {text: 'OK', onPress: () => ""},
+                    ],
+                    {cancelable: true},
+                )
+            }
         }
     }
 
@@ -52,8 +76,8 @@ export default class Login extends Component {
                             <Thumbnail square source={{ uri: this.state.thumbnail }} />
                         </Left>
                         <Body>
-                            <Text>John Doe</Text>
-                            <Text note numberOfLines={1}>Accuration : 75%</Text>
+                            <Text>{this.state.name}</Text>
+                            <Text note numberOfLines={1}>Accuration : {this.state.distance}%</Text>
                         </Body>
                         <Right>
                             <Button transparent>

@@ -23,7 +23,7 @@ class Present extends Component {
     }
 
     alert() {
-        ImagePicker.launchCamera(options, (response) => {
+        ImagePicker.launchImageLibrary(options, (response) => {
             if (response.didCancel) {
                 console.log('User cancelled image picker');
             } else if (response.error) {
@@ -38,17 +38,35 @@ class Present extends Component {
                     type: response.type,
                     uri : response.uri
                 });
-                fetch("https://facerest.herokuapp.com/present/image", {
+                fetch("http://117.53.47.77:3000/present", {
                     method: "POST",
                     body: form
                 })
                 .then(response => response.json())
                 .then(response => {
-                    this.setModalVisible(false);
-                    this.props.navigation.navigate('Login', response)
+                    console.log(response)
+                    if(response.Distance) {
+                        this.setModalVisible(false);
+                        this.props.navigation.navigate('Login', response)
+                    } else {
+                        Alert.alert(
+                            "Not recognized !",
+                            "You are not registered",
+                            [
+                                {text: 'GOT IT', onPress: () => this.setModalVisible(false)},
+                            ]
+                        )
+                    }
+                    
                 }).catch(error => {
                     console.log(error)
-                    this.setModalVisible(false);
+                    Alert.alert(
+                        "Not recognized !",
+                        "Make sure you are capturing face",
+                        [
+                            {text: 'GOT IT', onPress: () => this.setModalVisible(false)},
+                        ]
+                    )
                 })
             }
         });
