@@ -10,6 +10,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import in.sriraman.sharedpreferences.RNSharedPreferencesReactPackage;
+import com.airbnb.android.react.maps.MapsPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new ImagePickerPackage(),
             new RNGestureHandlerPackage(),
-            new RNSharedPreferencesReactPackage()
+            new RNSharedPreferencesReactPackage(),
+            new MapsPackage()
       );
     }
 

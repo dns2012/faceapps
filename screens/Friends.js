@@ -38,13 +38,15 @@ export default class History extends Component {
         });
     }
 
-    goLocation() {
-        this.props.navigation.navigate("Location");
+    goLocation(id) {
+        let obj = {
+            presentId : id
+        }
+        this.props.navigation.navigate("Location", obj);
     }
 
     componentDidMount() {
         let which = this;
-        SharedPreferences.setItem("userId", "5");
         SharedPreferences.getItem("userId", function(value) {
             let userId = parseInt(value);
             fetch("http://117.53.47.77:3000/present/friends/" + userId, {
@@ -122,7 +124,7 @@ export default class History extends Component {
                                         <Text note numberOfLines={1}>{present.created_at}</Text>
                                     </Body>
                                     <Right>
-                                        <Button onPress={this.goLocation} transparent>
+                                        <Button onPress={()=> this.goLocation(present.id)} transparent>
                                         <Text>View</Text>
                                         </Button>
                                     </Right>

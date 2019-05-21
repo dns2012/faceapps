@@ -39,7 +39,6 @@ export default class History extends Component {
 
   componentDidMount() {
     let which = this;
-    SharedPreferences.setItem("userId", "5");
     SharedPreferences.getItem("userId", function(value) {
       let userId = parseInt(value);
       fetch("http://117.53.47.77:3000/present/user/" + userId, {

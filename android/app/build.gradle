@@ -156,6 +156,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     compile 'com.facebook.fresco:animated-gif:1.10.0'
     compile project(":react-native-shared-preferences")
+    implementation project(':react-native-maps')
 }
 
 // Run this once to be able to run the application with BUCK

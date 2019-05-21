@@ -1,12 +1,38 @@
 import React, { Component } from 'react';
 
-import { Image, Alert } from 'react-native';
+import { Image, Alert, View, StyleSheet } from 'react-native';
 
 import { Container, Header, Body, Left, Card, CardItem, Thumbnail, Title, Button, Icon,  Content, Text } from 'native-base';
 
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+
+const styles = StyleSheet.create({
+    container: {
+        ...StyleSheet.absoluteFillObject,
+        height: 300,
+        width: '100%',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        position: 'relative'
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+        position: 'absolute'
+    },
+});
+
 export default class Location extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.state = {
+            presentId : props.navigation.state.params.presentId,
+            name : "",
+            accuration : 0,
+            latitude : 0,
+            longitude : 0,
+            userimage : "",
+            created : ""
+        }
         this.goFriends = this.goFriends.bind(this);
     }
     
@@ -14,59 +40,87 @@ export default class Location extends Component {
         this.props.navigation.navigate("Friends");
     }
 
-    componentDidMount() {
-        console.log('oke')
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                const location = JSON.stringify(position);
-                console.log(location)
-            },
-            error => Alert.alert(error.message),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-        );
+    componentWillMount() {
+        fetch("http://117.53.47.77:3000/present/" + this.state.presentId, {
+            method: "GET"
+        })
+        .then(response => response.json())
+        .then(response => {
+            this.setState({
+                name : response.Present.name,
+                accuration : response.Present.similiar,
+                latitude : parseFloat(response.Present.latitude),
+                longitude : parseFloat(response.Present.longitude),
+                userimage : response.Present.userimage,
+                created : response.Present.created_at
+            })
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
 
     render() {
         return (
-        <Container>
-            <Header>
-                <Left>
-                    <Button onPress={this.goFriends} transparent>
-                        <Icon name='arrow-back' />
-                    </Button>
-                </Left>
-                <Body>
-                    <Title>Location</Title>
-                </Body>
-            </Header>
-            <Content>
-                <Card style={{flex: 0}}>
-                    <CardItem>
-                        <Left>
-                            <Thumbnail source={{uri: 'http://www.pngall.com/wp-content/uploads/2016/04/Happy-Person-Free-Download-PNG.png'}} />
-                            <Body>
-                                <Text>Fadilatur</Text>
-                                <Text note>2019-03-23 07:20</Text>
+            <Container>
+                <Header>
+                    <Left>
+                        <Button onPress={this.goFriends} transparent>
+                            <Icon name='arrow-back' />
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>Location</Title>
+                    </Body>
+                </Header>
+                <Content>
+                    <Card style={{flex: 0}}>
+                        <CardItem>
+                            <Left>
+                                <Thumbnail source={{uri: "http://117.53.47.77:3000/upload/" + this.state.userimage}} />
+                                <Body>
+                                    <Text>{this.state.name}</Text>
+                                    <Text note>{this.state.created}</Text>
+                                </Body>
+                            </Left>
+                        </CardItem>
+                        <CardItem>
+                            <Body style={styles.container}>
+                                <MapView
+                                    provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                                    style={styles.map}
+                                    region={{
+                                        latitude: this.state.latitude,
+                                        longitude: this.state.longitude,
+                                        latitudeDelta: 1,
+                                        longitudeDelta: 0,
+                                    }}
+                                    >
+                                         <Marker
+                                            coordinate={{
+                                                latitude: this.state.latitude,
+                                                longitude: this.state.longitude
+                                            }}
+                                            title="My mark"
+                                            description="My mark desc"
+                                        />
+                                </MapView>
                             </Body>
-                        </Left>
-                    </CardItem>
-                    <CardItem>
-                        <Body>
-                            <Image source={{uri: 'https://cmxpv89733.i.lithium.com/t5/image/serverpage/image-id/82937i163CEC7FAC876446/image-size/medium?v=1.0&px=999'}} style={{height: 200, width: '100%', flex: 1}}/>
-                            <Text>
-                                Face accuration : 75%
-                            </Text>
-                            <Text>
-                                Latitude : -7.7868108
-                            </Text>
-                            <Text>
-                                Longitude : 113.1858074
-                            </Text>
-                        </Body>
-                    </CardItem>
-                </Card>
-            </Content>
-        </Container>
+                        </CardItem>
+                    </Card>
+                    <View>
+                        <Text>
+                            Face accuration : {this.state.accuration}%
+                        </Text>
+                        <Text>
+                            Latitude : {this.state.latitude}
+                        </Text>
+                        <Text>
+                            Longitude : {this.state.longitude}
+                        </Text>
+                    </View>
+                </Content>
+            </Container>
         );
     }
 }

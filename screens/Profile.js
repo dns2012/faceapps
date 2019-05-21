@@ -20,6 +20,7 @@ export default class Profile extends Component {
       backed : 0,
       userId : 0,
       name  : "",
+      email : "",
       username  : "",
       phone : "",
       address : "",
@@ -54,7 +55,6 @@ export default class Profile extends Component {
 
   componentDidMount() {
     let which = this;
-    SharedPreferences.setItem("userId", "5");
     SharedPreferences.getItem("userId", function(value) {
       let userId = parseInt(value);
       fetch("http://117.53.47.77:3000/profile/" + userId, {
@@ -65,6 +65,7 @@ export default class Profile extends Component {
         which.setState({
           userId : response.Profile.id,
           name : response.Profile.name,
+          email : response.Profile.email,
           username : response.Profile.username,
           phone : response.Profile.phone.toString(),
           address : response.Profile.address,
@@ -107,6 +108,7 @@ export default class Profile extends Component {
   submitProfile() {
     const form = {
       name : this.state.name,
+      email : this.state.email,
       username : this.state.username,
       phone : this.state.phone,
       address : this.state.address
@@ -200,6 +202,10 @@ export default class Profile extends Component {
                 <Item inlineLabel>
                   <Label>Name</Label>
                   <Input value={this.state.name} onChangeText={(text) => this.setState({name: text})}/>
+                </Item>
+                <Item inlineLabel>
+                  <Label>Email</Label>
+                  <Input value={this.state.email} onChangeText={(text) => this.setState({email: text})}/>
                 </Item>
                 <Item inlineLabel>
                   <Label>Username</Label>

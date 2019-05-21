@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import {Modal, TouchableHighlight, View, Alert} from 'react-native';
+import {Modal, TouchableHighlight, View, Alert, BackHandler} from 'react-native';
 
-import { Container, Icon, Text, Button, Thumbnail, Spinner } from 'native-base';
+import { Root, Container, Icon, Text, Button, Thumbnail, Spinner, Toast } from 'native-base';
 
 import ImagePicker from 'react-native-image-picker';
 
@@ -12,7 +12,10 @@ class Present extends Component {
     constructor() {
         super();
         this.state = {
-            modalVisible: false,
+            modalVisible : false,
+            backed : 0,
+            latitude : "",
+            longitude : ""
         }
         this.alert = this.alert.bind(this);
         this.setModalVisible = this.setModalVisible.bind(this);
@@ -44,8 +47,13 @@ class Present extends Component {
                 })
                 .then(response => response.json())
                 .then(response => {
-                    console.log(response)
                     if(response.Distance) {
+                        let coords = {
+                            Latitude : this.state.latitude,
+                            Longitude : this.state.longitude
+                        }
+                        let result = Object.assign(response, coords);
+                        console.log(result)
                         this.setModalVisible(false);
                         this.props.navigation.navigate('Login', response)
                     } else {
@@ -72,35 +80,78 @@ class Present extends Component {
         });
     }
 
+    componentDidMount() {
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                this.setState({
+                    latitude : position.coords.latitude,
+                    longitude : position.coords.longitude
+                })
+                console.log(position)
+            },
+            error => console.log(error.message),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+    
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+    
+    handleBackPress = () => {
+        let backed = this.state.backed + 1;
+        if(backed == 1) {
+            this.setState({
+                backed : backed
+            })
+            Toast.show({
+                text: "Press back again to exit.",
+                type: "default",
+                position: "bottom"
+            })
+            setTimeout(() => {
+            this.setState({
+                backed : 0
+            })
+            }, 3000);
+        } else if(backed == 2) {
+            BackHandler.exitApp();
+        }
+        return true;
+    }
+
     render() {
         return(
-            <Container>
-                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 15, backgroundColor: "#fff"}}>
-                    <Thumbnail large square source={{uri: "https://www.shareicon.net/data/512x512/2015/11/07/668308_contacts_512x512.png"}} />
-                    <Button bordered block primary rounded iconLeft onPress={this.alert}>
-                        <Icon name='person' />
-                        <Text>PRESENT TODAY</Text>
-                    </Button>
-                    <Text style={{marginTop: 10}}>
-                        Tap button above to capture your face !
-                    </Text>
+            <Root>
+                <Container>
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 15, backgroundColor: "#fff"}}>
+                        <Thumbnail large square source={{uri: "https://www.shareicon.net/data/512x512/2015/11/07/668308_contacts_512x512.png"}} />
+                        <Button bordered block primary rounded iconLeft onPress={this.alert}>
+                            <Icon name='person' />
+                            <Text>PRESENT TODAY</Text>
+                        </Button>
+                        <Text style={{marginTop: 10}}>
+                            Tap button above to capture your face !
+                        </Text>
 
-                    <Modal
-                    animationType="none"
-                    transparent={false}
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                    }}>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 15, backgroundColor: "#fafafa", opacity: 0.5}}>
-                            <View>
-                                <Spinner color='blue' />
-                                <Text>Rendering...</Text>
+                        <Modal
+                        animationType="none"
+                        transparent={false}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => {
+                            Alert.alert('Modal has been closed.');
+                        }}>
+                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 15, backgroundColor: "#fafafa", opacity: 0.5}}>
+                                <View>
+                                    <Spinner color='blue' />
+                                    <Text>Rendering...</Text>
+                                </View>
                             </View>
-                        </View>
-                    </Modal>
-                </View>
-            </Container>
+                        </Modal>
+                    </View>
+                </Container>
+            </Root>
         )
     }
 }

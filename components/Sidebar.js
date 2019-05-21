@@ -1,26 +1,50 @@
 import React, { Component } from 'react';
 
-import { View, Alert } from 'react-native';
+import { View, Alert, BackHandler } from 'react-native';
 
 import { Text, Thumbnail, Container,  Content,  ListItem, Icon, Left, Body, Button } from 'native-base';
+
+import SharedPreferences from 'react-native-shared-preferences';
 
 export default class Sidebar extends Component {
 
     constructor() {
         super();
         this.signOut = this.signOut.bind(this);
+        this.confirmedSO = this.confirmedSO.bind(this);
     }
     
     signOut() {
         Alert.alert(
             "Confirm Box",
-            "Sign out now?",
+            "Sign out and exit apps?",
             [
                 {text: 'CANCEL', onPress: () => ""},
-                {text: 'YES', onPress: () => this.props.navigation.navigate("Present")},
+                {text: 'YES', onPress: () => this.confirmedSO()},
             ],
             {cancelable: true},
         )
+    }
+
+    confirmedSO() {
+        SharedPreferences.getItem("userId", function(value) {
+            let userId = parseInt(value);
+            const form_status = {
+                status : "0"
+            }
+            fetch("http://117.53.47.77:3000/profile/status/" + userId, {
+                method: "PUT",
+                body: JSON.stringify(form_status),
+                headers: { 'Content-Type': 'application/json' },
+            })
+            .then(response => response.json())
+            .then(response => {})
+            .catch(error => {
+                console.log(error)
+            })
+        })
+        SharedPreferences.clear();
+        BackHandler.exitApp();
     }
 
     render() {

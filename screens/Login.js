@@ -43,6 +43,26 @@ export default class Login extends Component {
             if(password == this.props.navigation.state.params.Profile.password) {
                 let userId = this.props.navigation.state.params.Profile.id.toString();
                 SharedPreferences.setItem("userId", userId);
+                const form_present = {
+                    userId : userId,
+                    image : this.props.navigation.state.params.Image,
+                    similiar : this.props.navigation.state.params.Distance,
+                    latitude : this.props.navigation.state.params.Latitude,
+                    longitude : this.props.navigation.state.params.Longitude
+                }
+                fetch("http://117.53.47.77:3000/present/add", {
+                    method: "POST",
+                    body: JSON.stringify(form_present),
+                    headers: { 'Content-Type': 'application/json' },
+                })
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+                
                 this.props.navigation.navigate('Profile')
             } else {
                 Alert.alert(
