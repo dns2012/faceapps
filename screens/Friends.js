@@ -8,6 +8,8 @@ import Sidebar from '../components/Sidebar';
 
 import SharedPreferences from 'react-native-shared-preferences';
 
+import getDirections from 'react-native-google-maps-directions'
+
 export default class History extends Component {
 
     constructor(props) {
@@ -38,11 +40,20 @@ export default class History extends Component {
         });
     }
 
-    goLocation(id) {
-        let obj = {
-            presentId : id
+    goLocation(latitude, longitude) {
+        const data = {
+            destination: {
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude)
+            },
+            waypoints: [
+                {
+                    latitude: parseFloat(latitude),
+                    longitude: parseFloat(longitude)
+                },
+            ]
         }
-        this.props.navigation.navigate("Location", obj);
+        getDirections(data)
     }
 
     componentDidMount() {
@@ -124,7 +135,7 @@ export default class History extends Component {
                                         <Text note numberOfLines={1}>{present.created_at}</Text>
                                     </Body>
                                     <Right>
-                                        <Button onPress={()=> this.goLocation(present.id)} transparent>
+                                        <Button onPress={()=> this.goLocation(present.latitude, present.longitude)} transparent>
                                         <Text>View</Text>
                                         </Button>
                                     </Right>
