@@ -24,7 +24,7 @@ export default class Login extends Component {
 
     componentDidMount() {
         this.setState({
-            thumbnail : "http://117.53.47.77:3000/upload/" + this.props.navigation.state.params.Profile.image,
+            thumbnail : "http://117.53.47.77:3000/static/upload/" + this.props.navigation.state.params.Profile.image,
             distance : this.props.navigation.state.params.Distance,
             name : this.props.navigation.state.params.Profile.name
         })
@@ -66,7 +66,7 @@ export default class Login extends Component {
                 this.props.navigation.navigate('Profile')
             } else {
                 Alert.alert(
-                    "Alert",
+                    "Warning",
                     "Wrong password !",
                     [
                         {text: 'OK', onPress: () => ""},

@@ -117,7 +117,7 @@ export default class History extends Component {
                             {this.state.present.map((present, key) => 
                                 <ListItem thumbnail key={present.id}>
                                     <Left>
-                                        <Thumbnail square source={{ uri: "http://117.53.47.77:3000/upload/" + present.userimage }} />
+                                        <Thumbnail square source={{ uri: "http://117.53.47.77:3000/static/upload/" + present.userimage }} />
                                     </Left>
                                     <Body>
                                         <Text>{present.name}</Text>

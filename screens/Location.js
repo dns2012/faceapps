@@ -77,7 +77,7 @@ export default class Location extends Component {
                     <Card style={{flex: 0}}>
                         <CardItem>
                             <Left>
-                                <Thumbnail source={{uri: "http://117.53.47.77:3000/upload/" + this.state.userimage}} />
+                                <Thumbnail source={{uri: "http://117.53.47.77:3000/static/upload/" + this.state.userimage}} />
                                 <Body>
                                     <Text>{this.state.name}</Text>
                                     <Text note>{this.state.created}</Text>

@@ -13,10 +13,12 @@ import Profile from './screens/Profile';
 import History from './screens/History';
 import Location from './screens/Location';
 import Friends from './screens/Friends';
+import Register from './screens/Register';
 
 const MainNavigator = createStackNavigator(
   {
     Start : {screen : Start},
+    Register : {screen : Register},
     Present: {screen: Present},
     Login : {screen: Login},
     Forget : {screen: Forget},

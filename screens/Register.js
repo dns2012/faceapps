@@ -2,80 +2,36 @@ import React, { Component } from 'react';
 
 import { BackHandler, Alert, Modal, View } from 'react-native';
 
-import { Root, Container, Header, Left, Body, Right, Title, Content, Thumbnail, Form, Item, Label, Input, Textarea, Footer, FooterTab, Button, Icon, Text, Drawer, Toast, Spinner } from 'native-base';
+import { Root, Container, H1, Content, Thumbnail, Form, Item, Label, Input, Textarea, Footer, FooterTab, Button, Icon, Text, Drawer, Toast, Spinner } from 'native-base';
 
-import Sidebar from '../components/Sidebar';
-
-import SharedPreferences from 'react-native-shared-preferences';
+import md5 from 'md5';
 
 import ImagePicker from 'react-native-image-picker';
 
 const options = {};
 
-export default class Profile extends Component {
+export default class Register extends Component {
 
   constructor() {
     super();
     this.state = {
       backed : 0,
-      userId : 0,
       name  : "",
       email : "",
       username  : "",
+      password : "",
       phone : "",
       address : "",
       image : "",
+      defaulImage : "default-user.png",
       modalVisible: false,
     }
-    this.goHistory = this.goHistory.bind(this);
-    this.goFriends = this.goFriends.bind(this);
-    this.openDrawer = this.openDrawer.bind(this);
     this.submitProfile = this.submitProfile.bind(this);
     this.changeImage = this.changeImage.bind(this);
     this.setModalVisible = this.setModalVisible.bind(this);
   }
 
-  openDrawer = () => { this.drawer._root.open() };
-
-  goHistory() {
-    this.props.navigation.navigate("History", {
-      name : this.state.name,
-      username : this.state.username,
-      image : this.state.image
-    });
-  }
-
-  goFriends() {
-    this.props.navigation.navigate("Friends", {
-      name : this.state.name,
-      username : this.state.username,
-      image : this.state.image
-    });
-  }
-
   componentDidMount() {
-    let which = this;
-    SharedPreferences.getItem("userId", function(value) {
-      let userId = parseInt(value);
-      fetch("http://117.53.47.77:3000/profile/" + userId, {
-          method: "GET"
-      })
-      .then(response => response.json())
-      .then(response => {
-        which.setState({
-          userId : response.Profile.id,
-          name : response.Profile.name,
-          email : response.Profile.email,
-          username : response.Profile.username,
-          phone : response.Profile.phone.toString(),
-          address : response.Profile.address,
-          image : response.Profile.image
-        })
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    })
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
@@ -110,31 +66,63 @@ export default class Profile extends Component {
       name : this.state.name,
       email : this.state.email,
       username : this.state.username,
+      password : md5(this.state.password),
       phone : this.state.phone,
-      address : this.state.address
+      address : this.state.address,
+      image : this.state.image
     }
-    console.log(form)
-    fetch("http://117.53.47.77:3000/profile/" + this.state.userId, {
-        method: "PUT",
-        body: JSON.stringify(form),
-        headers: { 'Content-Type': 'application/json' },
-    })
-    .then(response => response.json())
-    .then(response => {
-      if(response.message == "completed") {
-        Alert.alert(
-            "Notification",
-            "Profile updated successfully",
-            [
-                {text: 'OK', onPress: () => ""},
-            ],
-            {cancelable: true},
-        )
-      }
-    })
-    .catch(error => {
-      console.log(error)
-    })
+
+    let arrayStateValue = [this.state.image, this.state.name, this.state.email, this.state.username, this.state.password, this.state.phone, this.state.address];
+    let arrayStateLabel = ["Image", "Name", "Email", "Username", "Password", "Phone", "Address"];
+    var arrayStateWatch = 0;
+    for(var i in arrayStateValue) {
+        if(arrayStateValue[i] === "") {
+            Alert.alert(
+                "Warning",
+                arrayStateLabel[i] + " is required !",
+                [
+                    {text: 'OK', onPress: () => ""},
+                ],
+                {cancelable: true},
+            )
+            arrayStateWatch += 1;
+            break;
+        }
+    }
+    if(arrayStateWatch === 0) {
+      fetch("http://117.53.47.77:3000/profile", {
+          method: "POST",
+          body: JSON.stringify(form),
+          headers: { 'Content-Type': 'application/json' },
+      })
+      .then(response => response.json())
+      .then(response => {
+          if(response.message === "completed") {
+            Alert.alert(
+                "Notification",
+                "Registered successfully !",
+                [
+                    {text: 'OK', onPress: () => this.props.navigation.navigate("Present")},
+                ],
+                {cancelable: true},
+            )
+          } else {
+            Alert.alert(
+                "Warning",
+                "User already registered !",
+                [
+                    {text: 'OK', onPress: () => ""},
+                ],
+                {cancelable: true},
+            )
+          }
+      })
+      .catch(error => {
+          console.log(error)
+      })
+    } else {
+        console.log("stuck");
+    }
   }
 
   changeImage() {
@@ -153,15 +141,26 @@ export default class Profile extends Component {
             type: response.type,
             uri : response.uri
         });
-        fetch("http://117.53.47.77:3000/profile/photo/" + this.state.userId, {
-            method: "PUT",
+        fetch("http://117.53.47.77:3000/image/verify", {
+            method: "POST",
             body: form
         })
         .then(response => response.json())
         .then(response => {
-            this.setState({
-              image : response.image
-            })
+            if(response.status === 1) {
+              this.setState({
+                image : response.image
+              })
+            } else {
+              Alert.alert(
+                  "Warning",
+                  "Failed capturing face, try again !",
+                  [
+                      {text: 'OK', onPress: () => ""},
+                  ],
+                  {cancelable: true},
+              )
+            }
             this.setModalVisible(false);
         }).catch(error => {
             console.log(error)
@@ -177,26 +176,16 @@ export default class Profile extends Component {
   
   render() {
     return (
-      <Drawer ref={(ref) => { this.drawer = ref; }} content={<Sidebar navigation={this.props.navigation} image={this.state.image} name={this.state.name} username={this.state.username}/>} >
         <Root>
           <Container>
-            <Header>
-                <Left>
-                  <Button onPress={this.openDrawer} transparent>
-                    <Icon name='menu' />
-                  </Button>
-                </Left>
-                <Body>
-                    <Title>MY PROFILE</Title>
-                </Body>
-                <Right>
-                  <Button transparent>
-                    <Text></Text>
-                  </Button>
-                </Right>
-            </Header>
             <Content>
-              <Thumbnail large source={{uri: "http://117.53.47.77:3000/static/upload/" + this.state.image}} style={{alignSelf: "center", marginTop: 20, width: 150, height: 150, borderRadius: 100, borderWidth: 1, borderColor: "#eee"}} />
+              <H1 style={{alignSelf:"center", marginTop: 20, color: "#3F51B5"}}>REGISTER</H1>
+              {this.state.image ?
+                <Thumbnail large source={{uri: "http://117.53.47.77:3000/static/upload/" + this.state.image}} style={{alignSelf: "center", marginTop: 20, width: 150, height: 150, borderRadius: 100, borderWidth: 1, borderColor: "#eee"}} />
+                :
+                <Thumbnail large source={{uri: "http://117.53.47.77:3000/static/upload/" + this.state.defaulImage}} style={{alignSelf: "center", marginTop: 20, width: 150, height: 150, borderRadius: 100, borderWidth: 1, borderColor: "#eee"}} />
+              }
+              
               <Icon name='camera' style={{alignSelf: "center", fontSize: 40, color: "#3F51B5"}} onPress={this.changeImage}/>
               <Form>
                 <Item inlineLabel>
@@ -212,31 +201,22 @@ export default class Profile extends Component {
                   <Input value={this.state.username} onChangeText={(text) => this.setState({username: text})}/>
                 </Item>
                 <Item inlineLabel>
+                  <Label>Password</Label>
+                  <Input value={this.state.password} secureTextEntry={true} onChangeText={(text) => this.setState({password: text})}/>
+                </Item>
+                <Item inlineLabel>
                   <Label>Phone</Label>
                   <Input keyboardType="numeric" value={this.state.phone} onChangeText={(text) => this.setState({phone: text})}/>
                 </Item>
                 <Textarea rowSpan={5} bordered placeholder="Address" style={{marginLeft: 14}} value={this.state.address} onChangeText={(text) => this.setState({address: text})}/>
-                <Button onPress={this.submitProfile} block primary rounded style={{marginTop: 10, marginLeft: 10, marginRight: 10, marginBottom: 50}}>
-                    <Text>SAVE</Text>
+                <Button onPress={this.submitProfile} block primary rounded style={{marginTop: 10, marginLeft: 10, marginRight: 10}}>
+                    <Text>SUBMIT</Text>
+                </Button>
+                <Button onPress={() => {this.props.navigation.navigate("Present")}} block light rounded style={{marginTop: 10, marginLeft: 10, marginRight: 10, marginBottom: 50}}>
+                    <Text>CANCEL</Text>
                 </Button>
               </Form>
             </Content>
-            <Footer>
-              <FooterTab>
-                <Button active vertical>
-                  <Icon name="person" />
-                  <Text>Profile</Text>
-                </Button>
-                <Button onPress={this.goHistory} vertical>
-                  <Icon name="paper" />
-                  <Text>History</Text>
-                </Button>
-                <Button onPress={this.goFriends} vertical>
-                  <Icon name="compass" />
-                  <Text>Friends</Text>
-                </Button>
-              </FooterTab>
-            </Footer>
             <Modal
               animationType="none"
               transparent={false}
@@ -247,13 +227,12 @@ export default class Profile extends Component {
                   <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 15, backgroundColor: "#fafafa", opacity: 0.5}}>
                       <View>
                           <Spinner color='blue' />
-                          <Text>Uploading...</Text>
+                          <Text>Verifying...</Text>
                       </View>
                   </View>
             </Modal>
           </Container>
         </Root>
-      </Drawer>
     );
   }
 }

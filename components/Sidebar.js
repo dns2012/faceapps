@@ -51,7 +51,7 @@ export default class Sidebar extends Component {
         return(
             <View style={{flex: 1}}>
                 <View style={{flex: 2, justifyContent: "center", alignItems: "center", backgroundColor: '#3F51B5'}}>
-                    <Thumbnail source={{uri: 'http://117.53.47.77:3000/upload/' + this.props.image}} style={{alignSelf: "center", marginTop: 10, width: 100, height: 100, borderRadius: 100, borderWidth: 1, borderColor: "#eee"}} />
+                    <Thumbnail source={{uri: 'http://117.53.47.77:3000/static/upload/' + this.props.image}} style={{alignSelf: "center", marginTop: 10, width: 100, height: 100, borderRadius: 100, borderWidth: 1, borderColor: "#eee"}} />
                     <Text style={{color: "#fff", fontSize: 20, textTransform: "uppercase"}}>{this.props.name}</Text>
                     <Text style={{color: "#fff", fontSize: 10}}> ~ {this.props.username}</Text>
                 </View>
