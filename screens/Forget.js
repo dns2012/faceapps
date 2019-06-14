@@ -21,14 +21,14 @@ export default class Login extends Component {
   submitEmail() {
       if(!this.state.email) {
           Toast.show({
-              text: "Email cannot be blank!",
+              text: "Email tidak boleh kosong !",
               type: "danger",
               position: "top"
           })
       } else {
           Alert.alert(
-            "Password reseted !",
-            "New password sent, check your email",
+            "Pemberitahuan",
+            "Kata sandi baru telah dikirim melalui email",
             [
               {text: 'GOT IT', onPress: () => this.props.navigation.navigate("Login")},
             ]
@@ -47,7 +47,7 @@ export default class Login extends Component {
                   </Button>
                 </Left>
                 <Body>
-                    <Title>Reset Password</Title>
+                    <Title>Atur Kata Sandi</Title>
                 </Body>
             </Header>
             <Content>
@@ -58,10 +58,10 @@ export default class Login extends Component {
                     </Item>
                 </Form>
                 <Button onPress={this.submitEmail} block danger rounded style={{marginTop: 10, marginLeft: 10, marginRight: 10}}>
-                    <Text>SEND EMAIL</Text>
+                    <Text>KIRIM EMAIL</Text>
                 </Button>
                 <Text style={{alignSelf: "center", marginTop: 10, marginRight: 10}}>
-                    Please enter your registered email
+                    Harap memasukkan email yang telah terdaftar
                 </Text>
             </Content>
           </Container>

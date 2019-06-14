@@ -68,7 +68,7 @@ export default class History extends Component {
         backed : backed
       })
       Toast.show({
-        text: "Press back again to exit.",
+        text: "Tekan lagi untuk keluar.",
         type: "default",
         position: "bottom"
       })
@@ -95,7 +95,7 @@ export default class History extends Component {
                   </Button>
                 </Left>
                 <Body>
-                    <Title>MY HISTORY</Title>
+                    <Title>RIWAYAT</Title>
                 </Body>
                 <Right>
                   <Button transparent>
@@ -109,7 +109,7 @@ export default class History extends Component {
                   <ListItem key={present.id}>
                     <Body>
                       <Text>{present.created_at}</Text>
-                      <Text note>Your face accuration : {present.similiar}%</Text>
+                      <Text note>Akurasi wajahmu : {present.similiar}%</Text>
                     </Body>
                     <Right>
                       <Text note>VALID</Text>
@@ -122,15 +122,15 @@ export default class History extends Component {
               <FooterTab>
                 <Button onPress={this.goProfile} vertical>
                   <Icon name="person" />
-                  <Text>Profile</Text>
+                  <Text>Profil</Text>
                 </Button>
                 <Button active vertical>
                   <Icon name="paper" />
-                  <Text>History</Text>
+                  <Text>Riwayat</Text>
                 </Button>
                 <Button onPress={this.goFriends} vertical>
                   <Icon name="compass" />
-                  <Text>Friends</Text>
+                  <Text>Teman</Text>
                 </Button>
               </FooterTab>
             </Footer>

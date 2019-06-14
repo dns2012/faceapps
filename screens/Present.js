@@ -147,7 +147,7 @@ class Present extends Component {
                 backed : backed
             })
             Toast.show({
-                text: "Press back again to exit.",
+                text: "Tekan lagi untuk keluar.",
                 type: "default",
                 position: "bottom"
             })
@@ -169,14 +169,14 @@ class Present extends Component {
                     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 15, backgroundColor: "#fff"}}>
                         <Thumbnail large square source={{uri: "https://www.shareicon.net/data/512x512/2015/11/07/668308_contacts_512x512.png"}} />
                         <Item inlineLabel style={{marginBottom: 10}} bordered rounded>
-                            <Input value={this.state.username} onChangeText={(text) => this.setState({username: text})} placeholder="Username" style={{textAlign: "center"}} />
+                            <Input value={this.state.username} onChangeText={(text) => this.setState({username: text})} placeholder="Nama Pengguna" style={{textAlign: "center"}} />
                         </Item>
                         <Button bordered block primary rounded iconLeft onPress={this.checkUser}>
                             <Icon name='person' />
-                            <Text>PRESENT TODAY</Text>
+                            <Text>ABSEN SEKARANG</Text>
                         </Button>
                         <Text style={{marginTop: 10}}>
-                            Don’t have an account yet? <Text style={{textDecorationLine: "underline", color: "#3F51B5"}} onPress={() => {this.props.navigation.navigate("Register")}}>Sign up</Text>
+                            Belum punya akun? <Text style={{textDecorationLine: "underline", color: "#3F51B5"}} onPress={() => {this.props.navigation.navigate("Register")}}>Daftar</Text>
                         </Text>
 
                         <Modal
@@ -189,7 +189,7 @@ class Present extends Component {
                             <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 15, backgroundColor: "#fafafa", opacity: 0.5}}>
                                 <View>
                                     <Spinner color='blue' />
-                                    <Text>Rendering...</Text>
+                                    <Text>Merender...</Text>
                                 </View>
                             </View>
                         </Modal>

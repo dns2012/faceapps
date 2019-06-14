@@ -88,7 +88,7 @@ export default class History extends Component {
                 backed : backed
             })
             Toast.show({
-                text: "Press back again to exit.",
+                text: "Tekan lagi untuk keluar.",
                 type: "default",
                 position: "bottom"
             })
@@ -115,7 +115,7 @@ export default class History extends Component {
                                 </Button>
                             </Left>
                             <Body>
-                                <Title>MY FRIENDS</Title>
+                                <Title>TEMAN</Title>
                             </Body>
                             <Right>
                                 <Button transparent>
@@ -136,7 +136,7 @@ export default class History extends Component {
                                     </Body>
                                     <Right>
                                         <Button onPress={()=> this.goLocation(present.latitude, present.longitude)} transparent>
-                                        <Text>View</Text>
+                                        <Text>Tampilkan</Text>
                                         </Button>
                                     </Right>
                                 </ListItem>
@@ -147,15 +147,15 @@ export default class History extends Component {
                             <FooterTab>
                                 <Button onPress={this.goProfile} vertical>
                                     <Icon name="person" />
-                                    <Text>Profile</Text>
+                                    <Text>Profil</Text>
                                 </Button>
                                 <Button onPress={this.goHistory} vertical>
                                     <Icon name="paper" />
-                                    <Text>History</Text>
+                                    <Text>Riwayat</Text>
                                 </Button>
                                 <Button active vertical>
                                     <Icon name="compass" />
-                                    <Text>Friends</Text>
+                                    <Text>Teman</Text>
                                 </Button>
                             </FooterTab>
                         </Footer>

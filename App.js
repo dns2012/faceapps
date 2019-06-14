@@ -14,6 +14,7 @@ import History from './screens/History';
 import Location from './screens/Location';
 import Friends from './screens/Friends';
 import Register from './screens/Register';
+import Password from './screens/Password';
 
 const MainNavigator = createStackNavigator(
   {
@@ -26,6 +27,7 @@ const MainNavigator = createStackNavigator(
     History : {screen: History},
     Location : {screen: Location},
     Friends : {screen: Friends},
+    Password : {screen : Password}
   },
   {
     headerMode: 'none',

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Alert } from 'react-native';
+import { Alert, BackHandler } from 'react-native';
 
 import { Container, Header, Body, Left, Right, List, ListItem, Thumbnail, Title, Content, Form, Item, Input, Label, Button, Text} from 'native-base';
 
@@ -63,11 +63,12 @@ export default class Login extends Component {
                     console.log(error)
                 })
                 
-                this.props.navigation.navigate('Profile')
+                // this.props.navigation.navigate('Profile')
+                BackHandler.exitApp();
             } else {
                 Alert.alert(
-                    "Warning",
-                    "Wrong password !",
+                    "Peringatan",
+                    "Kata sandi salah !",
                     [
                         {text: 'OK', onPress: () => ""},
                     ],
@@ -86,7 +87,7 @@ export default class Login extends Component {
             <Container>
                 <Header>
                     <Body style={{alignItems: "center"}}>
-                        <Title>Face Detected</Title>
+                        <Title>Wajah Terdeteksi</Title>
                     </Body>
                 </Header>
                 <Content>
@@ -97,30 +98,30 @@ export default class Login extends Component {
                         </Left>
                         <Body>
                             <Text>{this.state.name}</Text>
-                            <Text note numberOfLines={1}>Accuration : {this.state.distance}%</Text>
+                            <Text note numberOfLines={1}>Akurasi : {this.state.distance}%</Text>
                         </Body>
                         <Right>
                             <Button transparent>
-                                <Text>DETAIL</Text>
+                                <Text></Text>
                             </Button>
                         </Right>
                         </ListItem>
                     </List>
                     <Form>
                         <Item stackedLabel>
-                            <Label>Password</Label>
+                            <Label>Kata Sandi</Label>
                             <Input secureTextEntry={true} onChangeText={(text) => this.setState({password: text})} />
-                            <Text style={{color: "red", alignSelf: "flex-start", display: this.state.required}}>Password required</Text>
+                            <Text style={{color: "red", alignSelf: "flex-start", display: this.state.required}}>Password dibutuhkan</Text>
                         </Item>
                         <Button onPress={this.submitLogin} block primary rounded style={{marginTop: 10, marginLeft: 10, marginRight: 10}}>
-                            <Text>SIGN IN</Text>
+                            <Text>MASUK</Text>
                         </Button>
                     </Form>
                     <Text style={{alignSelf: "center", marginTop: 10}}>
-                        OR
+                        ATAU
                     </Text>
                     <Button onPress={this.goForget} block danger rounded style={{marginTop: 10, marginLeft: 10, marginRight: 10}}>
-                        <Text>FORGET PASSWORD</Text>
+                        <Text>LUPA KATA SANDI</Text>
                     </Button>
                 </Content>
             </Container>

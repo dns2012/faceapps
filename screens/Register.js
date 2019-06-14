@@ -46,7 +46,7 @@ export default class Register extends Component {
         backed : backed
       })
       Toast.show({
-        text: "Press back again to exit.",
+        text: "Tekan lagi untuk keluar.",
         type: "default",
         position: "bottom"
       })
@@ -73,13 +73,13 @@ export default class Register extends Component {
     }
 
     let arrayStateValue = [this.state.image, this.state.name, this.state.email, this.state.username, this.state.password, this.state.phone, this.state.address];
-    let arrayStateLabel = ["Image", "Name", "Email", "Username", "Password", "Phone", "Address"];
+    let arrayStateLabel = ["Gambar/Foto", "Nama Lengkap", "Email", "Nama Pengguna", "Kata Sandi", "No.HP/Telepon", "Alamat"];
     var arrayStateWatch = 0;
     for(var i in arrayStateValue) {
         if(arrayStateValue[i] === "") {
             Alert.alert(
-                "Warning",
-                arrayStateLabel[i] + " is required !",
+                "Peringatan",
+                arrayStateLabel[i] + " dibutuhkan !",
                 [
                     {text: 'OK', onPress: () => ""},
                 ],
@@ -99,8 +99,8 @@ export default class Register extends Component {
       .then(response => {
           if(response.message === "completed") {
             Alert.alert(
-                "Notification",
-                "Registered successfully !",
+                "Pemberitahuan",
+                "Pendaftaran berhasil !",
                 [
                     {text: 'OK', onPress: () => this.props.navigation.navigate("Present")},
                 ],
@@ -108,8 +108,8 @@ export default class Register extends Component {
             )
           } else {
             Alert.alert(
-                "Warning",
-                "User already registered !",
+                "Peringatan",
+                "Pengguna telah terdaftar !",
                 [
                     {text: 'OK', onPress: () => ""},
                 ],
@@ -153,8 +153,8 @@ export default class Register extends Component {
               })
             } else {
               Alert.alert(
-                  "Warning",
-                  "Failed capturing face, try again !",
+                  "Peringatan",
+                  "Gagal menangkap pola wajah, coba lagi !",
                   [
                       {text: 'OK', onPress: () => ""},
                   ],
@@ -179,17 +179,17 @@ export default class Register extends Component {
         <Root>
           <Container>
             <Content>
-              <H1 style={{alignSelf:"center", marginTop: 20, color: "#3F51B5"}}>REGISTER</H1>
+              <H1 style={{alignSelf:"center", marginTop: 20, color: "#808080"}}>DAFTAR</H1>
               {this.state.image ?
                 <Thumbnail large source={{uri: "http://117.53.47.77:3000/static/upload/" + this.state.image}} style={{alignSelf: "center", marginTop: 20, width: 150, height: 150, borderRadius: 100, borderWidth: 1, borderColor: "#eee"}} />
                 :
                 <Thumbnail large source={{uri: "http://117.53.47.77:3000/static/upload/" + this.state.defaulImage}} style={{alignSelf: "center", marginTop: 20, width: 150, height: 150, borderRadius: 100, borderWidth: 1, borderColor: "#eee"}} />
               }
               
-              <Icon name='camera' style={{alignSelf: "center", fontSize: 40, color: "#3F51B5"}} onPress={this.changeImage}/>
+              <Icon name='camera' style={{alignSelf: "center", fontSize: 40, color: "#808080"}} onPress={this.changeImage}/>
               <Form>
                 <Item inlineLabel>
-                  <Label>Name</Label>
+                  <Label>Nama Lengkap</Label>
                   <Input value={this.state.name} onChangeText={(text) => this.setState({name: text})}/>
                 </Item>
                 <Item inlineLabel>
@@ -197,23 +197,23 @@ export default class Register extends Component {
                   <Input value={this.state.email} onChangeText={(text) => this.setState({email: text})}/>
                 </Item>
                 <Item inlineLabel>
-                  <Label>Username</Label>
+                  <Label>Nama Pengguna</Label>
                   <Input value={this.state.username} onChangeText={(text) => this.setState({username: text})}/>
                 </Item>
                 <Item inlineLabel>
-                  <Label>Password</Label>
+                  <Label>Kata Sandi</Label>
                   <Input value={this.state.password} secureTextEntry={true} onChangeText={(text) => this.setState({password: text})}/>
                 </Item>
                 <Item inlineLabel>
-                  <Label>Phone</Label>
+                  <Label>No.HP/Telepon</Label>
                   <Input keyboardType="numeric" value={this.state.phone} onChangeText={(text) => this.setState({phone: text})}/>
                 </Item>
-                <Textarea rowSpan={5} bordered placeholder="Address" style={{marginLeft: 14}} value={this.state.address} onChangeText={(text) => this.setState({address: text})}/>
+                <Textarea rowSpan={5} bordered placeholder="Alamat" style={{marginLeft: 14}} value={this.state.address} onChangeText={(text) => this.setState({address: text})}/>
                 <Button onPress={this.submitProfile} block primary rounded style={{marginTop: 10, marginLeft: 10, marginRight: 10}}>
                     <Text>SUBMIT</Text>
                 </Button>
                 <Button onPress={() => {this.props.navigation.navigate("Present")}} block light rounded style={{marginTop: 10, marginLeft: 10, marginRight: 10, marginBottom: 50}}>
-                    <Text>CANCEL</Text>
+                    <Text>BATAL</Text>
                 </Button>
               </Form>
             </Content>
@@ -227,7 +227,7 @@ export default class Register extends Component {
                   <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 15, backgroundColor: "#fafafa", opacity: 0.5}}>
                       <View>
                           <Spinner color='blue' />
-                          <Text>Verifying...</Text>
+                          <Text>Memverifikasi...</Text>
                       </View>
                   </View>
             </Modal>

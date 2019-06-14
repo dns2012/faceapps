@@ -90,7 +90,7 @@ export default class Profile extends Component {
         backed : backed
       })
       Toast.show({
-        text: "Press back again to exit.",
+        text: "Tekan lagi untuk keluar.",
         type: "default",
         position: "bottom"
       })
@@ -123,8 +123,8 @@ export default class Profile extends Component {
     .then(response => {
       if(response.message == "completed") {
         Alert.alert(
-            "Notification",
-            "Profile updated successfully",
+            "Pemberitahuan",
+            "Edit profil berhasil",
             [
                 {text: 'OK', onPress: () => ""},
             ],
@@ -187,7 +187,7 @@ export default class Profile extends Component {
                   </Button>
                 </Left>
                 <Body>
-                    <Title>MY PROFILE</Title>
+                    <Title>PROFIL</Title>
                 </Body>
                 <Right>
                   <Button transparent>
@@ -197,10 +197,10 @@ export default class Profile extends Component {
             </Header>
             <Content>
               <Thumbnail large source={{uri: "http://117.53.47.77:3000/static/upload/" + this.state.image}} style={{alignSelf: "center", marginTop: 20, width: 150, height: 150, borderRadius: 100, borderWidth: 1, borderColor: "#eee"}} />
-              <Icon name='camera' style={{alignSelf: "center", fontSize: 40, color: "#3F51B5"}} onPress={this.changeImage}/>
+              <Icon name='camera' style={{alignSelf: "center", fontSize: 40, color: "#808080"}} onPress={this.changeImage}/>
               <Form>
                 <Item inlineLabel>
-                  <Label>Name</Label>
+                  <Label>Nama Lengkap</Label>
                   <Input value={this.state.name} onChangeText={(text) => this.setState({name: text})}/>
                 </Item>
                 <Item inlineLabel>
@@ -208,16 +208,16 @@ export default class Profile extends Component {
                   <Input value={this.state.email} onChangeText={(text) => this.setState({email: text})}/>
                 </Item>
                 <Item inlineLabel>
-                  <Label>Username</Label>
+                  <Label>Nama Pengguna</Label>
                   <Input value={this.state.username} onChangeText={(text) => this.setState({username: text})}/>
                 </Item>
                 <Item inlineLabel>
-                  <Label>Phone</Label>
+                  <Label>No.HP/Telepon</Label>
                   <Input keyboardType="numeric" value={this.state.phone} onChangeText={(text) => this.setState({phone: text})}/>
                 </Item>
-                <Textarea rowSpan={5} bordered placeholder="Address" style={{marginLeft: 14}} value={this.state.address} onChangeText={(text) => this.setState({address: text})}/>
+                <Textarea rowSpan={5} bordered placeholder="Alamat" style={{marginLeft: 14}} value={this.state.address} onChangeText={(text) => this.setState({address: text})}/>
                 <Button onPress={this.submitProfile} block primary rounded style={{marginTop: 10, marginLeft: 10, marginRight: 10, marginBottom: 50}}>
-                    <Text>SAVE</Text>
+                    <Text>SIMPAN</Text>
                 </Button>
               </Form>
             </Content>
@@ -225,15 +225,15 @@ export default class Profile extends Component {
               <FooterTab>
                 <Button active vertical>
                   <Icon name="person" />
-                  <Text>Profile</Text>
+                  <Text>Profil</Text>
                 </Button>
                 <Button onPress={this.goHistory} vertical>
                   <Icon name="paper" />
-                  <Text>History</Text>
+                  <Text>Riwayat</Text>
                 </Button>
                 <Button onPress={this.goFriends} vertical>
                   <Icon name="compass" />
-                  <Text>Friends</Text>
+                  <Text>Teman</Text>
                 </Button>
               </FooterTab>
             </Footer>
@@ -247,7 +247,7 @@ export default class Profile extends Component {
                   <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 15, backgroundColor: "#fafafa", opacity: 0.5}}>
                       <View>
                           <Spinner color='blue' />
-                          <Text>Uploading...</Text>
+                          <Text>Mengupload...</Text>
                       </View>
                   </View>
             </Modal>
